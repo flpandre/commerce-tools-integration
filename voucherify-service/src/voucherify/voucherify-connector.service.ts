@@ -124,22 +124,53 @@ export class VoucherifyConnectorService {
 
   async getAvailablePromotions(cart) {
     const items = mapItemsToVoucherifyOrdersItems(cart.items);
-    const promotions = await this.getClient().promotions.validate({
-      customer: {
-        id: cart.customerId || cart.anonymousId,
-        source_id: cart.customerId || cart.anonymousId,
-      },
-      order: {
-        source_id: cart.id,
-        items,
-        amount: items.reduce((acc, item) => acc + item.amount, 0),
-      },
-    });
+    const start = performance.now();
+    const allPromotionTiers = [];
+    let startingAfter: string | undefined = undefined;
+    let hasMore = true;
 
-    if (promotions.valid) {
-      return promotions.promotions;
+    while (hasMore) {
+      const eligibilityResponse =
+        await this.getClient().qualifications.checkEligibility({
+          scenario: 'PRODUCTS',
+          mode: 'ADVANCED',
+          customer: {
+            id: cart.customerId || cart.anonymousId,
+            source_id: cart.customerId || cart.anonymousId,
+          },
+          order: {
+            source_id: cart.id,
+            items,
+            amount: items.reduce((acc, item) => acc + item.amount, 0),
+          },
+          options: {
+            limit: 500,
+            starting_after: startingAfter,
+            expand: ['redeemable'],
+          },
+        });
+
+      const promotionTiers = eligibilityResponse.redeemables?.data;
+      allPromotionTiers.push(...promotionTiers);
+
+      hasMore = eligibilityResponse.redeemables?.has_more || false;
+
+      if (hasMore && eligibilityResponse.redeemables?.data?.length > 0) {
+        const lastItem =
+          eligibilityResponse.redeemables.data[
+            eligibilityResponse.redeemables.data.length - 1
+          ];
+        startingAfter = lastItem.created_at;
+      }
     }
 
-    return [];
+    const end = performance.now();
+    this.logger.debug(
+      `Get promotions/eligibility (${
+        allPromotionTiers.length
+      } total): ${elapsedTime(start, end)}`,
+    );
+
+    return allPromotionTiers as any[];
   }
 }

@@ -416,7 +416,7 @@ export const cart = {
       discount_codes: [
         '{"status":"AVAILABLE","value":1000,"banner":"Promotion A2 tier 1","code":"promo_LP8KQR34UHK5b1UWeBH62FS2","type":"promotion_tier"}',
         '{"status":"NEW","value":1000,"banner":"Promotion A1 tier 1","code":"promo_Y4lMzNB8H69GojnLyF3hJZXP","type":"promotion_tier"}',
-        '{"status":"AVAILABLE","value":10600,"banner":"Over 300EUR off","code":"promo_O2WtQixJ6WbXy0KRNG24S51Y","type":"promotion_tier"}',
+        '{"status":"AVAILABLE","value":10,"banner":"Over 300EUR off","code":"promo_O2WtQixJ6WbXy0KRNG24S51Y","type":"promotion_tier"}',
       ],
       shippingProductSourceIds: [],
       session: 'ssn_sP4wyA8d2tGzD6Nt4zVBSLOjoLZB2P3d',

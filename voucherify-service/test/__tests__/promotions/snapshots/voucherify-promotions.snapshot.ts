@@ -57,6 +57,14 @@ export const promotions = [
       amount_off: 1000,
       is_dynamic: false,
     },
+    result: {
+      discount: {
+        type: 'AMOUNT',
+        effect: 'APPLY_TO_ORDER',
+        amount_off: 1000,
+        is_dynamic: false,
+      },
+    },
     campaign: {
       id: 'camp_vfXIzAr1MtiFsdqtu482tX0f',
       start_date: null,
@@ -129,6 +137,14 @@ export const promotions = [
       effect: 'APPLY_TO_ORDER',
       amount_off: 1000,
       is_dynamic: false,
+    },
+    result: {
+      discount: {
+        type: 'AMOUNT',
+        effect: 'APPLY_TO_ORDER',
+        amount_off: 1000,
+        is_dynamic: false,
+      },
     },
     campaign: {
       id: 'camp_T6XdWJdP6zvTnCwmgNLoLut3',
@@ -203,6 +219,15 @@ export const promotions = [
       percent_off: 10,
       amount_limit: 100000,
       is_dynamic: false,
+    },
+    result: {
+      discount: {
+        type: 'PERCENT',
+        effect: 'APPLY_TO_ORDER',
+        percent_off: 10,
+        amount_limit: 100000,
+        is_dynamic: false,
+      },
     },
     campaign: {
       id: 'camp_3oe5B5ZGhn3tqtJzQ2ca9mJL',

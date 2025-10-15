@@ -34,7 +34,10 @@ export class VoucherifyService {
       .map((promo) => {
         return {
           status: 'AVAILABLE',
-          value: promo.discount_amount,
+          value:
+            promo.result?.discount?.amount_off ||
+            promo.result?.discount?.percent_off ||
+            0,
           banner: promo.banner,
           code: promo.id,
           type: promo.object,

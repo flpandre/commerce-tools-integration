@@ -74,20 +74,44 @@ describe('VoucherifyConnectorService', () => {
   });
 
   it('should check if validate was called 1 time, and items were mapped correctly', async () => {
-    const validate = jest
-      .fn()
-      .mockResolvedValue(getAvailablePromotionsResponseObject);
+    const checkEligibility = jest.fn().mockResolvedValue({
+      redeemables: {
+        data: getAvailablePromotionsResponseObject.promotions,
+        has_more: false,
+      },
+    });
+
+    const list = jest.fn().mockResolvedValue({ schemas: [] });
 
     service.getClient = jest.fn().mockReturnValue({
-      promotions: {
-        validate,
+      qualifications: {
+        checkEligibility,
+      },
+      metadataSchemas: {
+        list,
       },
     });
 
     await service.getAvailablePromotions(getAvailablePromotionsCart);
-    expect(validate).toBeCalledTimes(1);
-    expect(validate).toBeCalledWith(
-      expect.objectContaining(getAvailablePromotionsValidateWith),
+    expect(checkEligibility).toBeCalledTimes(1);
+    expect(checkEligibility).toBeCalledWith(
+      expect.objectContaining({
+        scenario: 'PRODUCTS',
+        mode: 'ADVANCED',
+        customer: {
+          id: '03970ec0-fa17-45d6-a19f-208ee3fcb1a4',
+          source_id: '03970ec0-fa17-45d6-a19f-208ee3fcb1a4',
+        },
+        order: expect.objectContaining({
+          source_id: '9e9d98f0-0cf7-4487-95d8-56c1478d7a17',
+          amount: 19000,
+        }),
+        options: {
+          limit: 500,
+          starting_after: undefined,
+          expand: ['redeemable'],
+        },
+      }),
     );
   });
 
