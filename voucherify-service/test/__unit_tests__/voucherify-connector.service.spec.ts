@@ -97,7 +97,6 @@ describe('VoucherifyConnectorService', () => {
     expect(checkEligibility).toBeCalledWith(
       expect.objectContaining({
         scenario: 'PRODUCTS',
-        mode: 'ADVANCED',
         customer: {
           id: '03970ec0-fa17-45d6-a19f-208ee3fcb1a4',
           source_id: '03970ec0-fa17-45d6-a19f-208ee3fcb1a4',

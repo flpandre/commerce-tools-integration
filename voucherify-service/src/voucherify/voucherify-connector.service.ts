@@ -133,7 +133,6 @@ export class VoucherifyConnectorService {
       const eligibilityResponse =
         await this.getClient().qualifications.checkEligibility({
           scenario: 'PRODUCTS',
-          mode: 'ADVANCED',
           customer: {
             id: cart.customerId || cart.anonymousId,
             source_id: cart.customerId || cart.anonymousId,
